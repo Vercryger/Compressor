@@ -2,10 +2,10 @@
 
 ; subprogram counter
 ; Parameters:
-;   cadeChar at -> [ebp + 8]
+;   cadeChar[] at -> [ebp + 8]
 ; Note: 
 ;		res at -> eax
-;   eax, ebx, ecx & edx will be destroyed
+;   eax, ebx & edx will be destroyed
 segment .data
  
 segment .text
@@ -21,9 +21,8 @@ segment .text
 		mov al, [ebx]				; al = cadeChar[0]
 
 		while_loop:
-			dump_regs 1
 			cmp al, 0
-			je end_while			; end of cadeChar
+			je end_while			; end of cadeChar[]
 
 				cmp al, 65
 				je there_is_an_A
@@ -35,21 +34,21 @@ segment .text
 				inc dl
 				jmp short end_if
 
-			there_is_an_A:
-				rol edx, 8
-				inc dl
-				ror edx, 8
-				jmp short end_if
-			there_is_a_B:
-				rol edx, 16
-				inc dl
-				ror edx, 16
-				jmp short end_if
-			there_is_a_C:
-				rol edx, 24
-				inc dl
-				ror edx, 24
-			end_if:
+				there_is_an_A:
+					rol edx, 8
+					inc dl
+					ror edx, 8
+					jmp short end_if
+				there_is_a_B:
+					rol edx, 16
+					inc dl
+					ror edx, 16
+					jmp short end_if
+				there_is_a_C:
+					rol edx, 24
+					inc dl
+					ror edx, 24
+				end_if:
 
 				inc ebx					
 				mov al, [ebx]			; next element from cadeChar
@@ -57,6 +56,55 @@ segment .text
 		end_while:
 
 		mov eax, edx			; <- result
+
+    pop ebp
+    ret   
+
+; subprogram sortbyte
+; Parameters:
+;   register to sort at -> [ebp + 8]
+; Note: 
+;		res at -> eax
+;   eax & ecx will be destroyed
+segment .data
+ 
+segment .text
+  global sortbyte
+  
+  sortbyte:
+    push ebp
+    mov ebp, esp
+
+    mov ecx, 0					; ecx will represents the i & j indexes
+    										; 0 <= ch < 4  &  0 <= cl < 3
+    mov eax, [ebp + 8]
+
+    for_loop_1:
+    	cmp ch, 4
+    	je end_for_1
+    	
+    	mov cl, 0					; resets cl 
+    	for_loop_2:
+    		cmp cl, 3
+    		je end_for_2
+    		
+    			cmp ah, al		
+    			jl swap				; ah < al
+    			jmp short end_if_sort
+
+    			swap:
+    				xchg ah, al	
+    			end_if_sort:
+
+    		ror eax, 8
+    		inc cl
+    		jmp short for_loop_2
+    	end_for_2:
+
+    	ror eax, 8
+    	inc ch
+    	jmp short for_loop_1
+    end_for_1:		
 
     pop ebp
     ret   

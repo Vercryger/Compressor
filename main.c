@@ -9,7 +9,7 @@ void print_binary_rep(char *str) {
 	char curr;
 	unsigned char mask;
 	while (curr = str[i]) {
-//		printf("%d:",curr);
+		// printf("%d:",curr);
 		// Los codigos ascii son: A: 65, B: 66, C: 67, D: 68.
 		mask = 0x80;
 		for (j=0;j<8;j++) {
@@ -98,7 +98,6 @@ int main(int argc, char *argv[]) {
 	char table[5];
 	table[4] = 0;
 	int str_elems = 20;
-	int n = 0;
 
 	char *str;
 	char *encoded_str;
