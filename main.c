@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 
 	// Ejemplo por defecto:
 	// AAACCBBACBBBBAADDBB
-	char def_str[20] = "AAACCBBACBBBBAADDBBA";
+	char def_str[20] = "AAACCBBACBBBBAADDBB";
 	char table[5];
 	table[4] = 0;
 	int str_elems = 20;

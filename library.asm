@@ -17,12 +17,13 @@ segment .text
 
 		mov edx, 0					; edx will store the number of letters
 		mov ebx, [ebp + 8]	; move the "array of bytes" to ebx
-		mov ecx, 20					; ecx = cadeChar.length()
 		
+		mov al, [ebx]				; al = cadeChar[0]
+
 		while_loop:
-			cmp ecx, 0
-			je end_while
-				mov al, [ebx]
+			dump_regs 1
+			cmp al, 0
+			je end_while			; end of cadeChar
 
 				cmp al, 65
 				je there_is_an_A
@@ -33,6 +34,7 @@ segment .text
 			;	then there_is_a_D
 				inc dl
 				jmp short end_if
+
 			there_is_an_A:
 				rol edx, 8
 				inc dl
@@ -48,7 +50,9 @@ segment .text
 				inc dl
 				ror edx, 24
 			end_if:
-				inc ebx
+
+				inc ebx					
+				mov al, [ebx]			; next element from cadeChar
 			loop while_loop
 		end_while:
 

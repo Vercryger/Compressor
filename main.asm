@@ -1,6 +1,7 @@
 %include "asm_io.inc"
 
 segment .data
+	matrix dd 0
 
 segment .bss
 
