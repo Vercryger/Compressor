@@ -121,8 +121,7 @@ int main(int argc, char *argv[]) {
 	encoded_str = malloc(str_elems);
 	decoded_str = malloc(str_elems);
 
-	encode(str, &n);
-	printf("Elems = %d\n", n);
+	encode(str, table, encoded_str);
 
 	// printf("----------- Resultado de la codificacion  --------\n");
 	// printf("Tabla: \n");
