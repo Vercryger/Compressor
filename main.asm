@@ -24,11 +24,11 @@ encode:
 		je end_while
 			mov al, [ebx]
 
-			cmp al, 41
+			cmp al, 65
 			je there_is_an_A
-			cmp al, 42
+			cmp al, 66
 			je there_is_a_B
-			cmp al, 43
+			cmp al, 67
 			je there_is_a_C
 		;	then there_is_a_D
 			inc dword [count_d]
@@ -45,10 +45,6 @@ encode:
 			inc ebx
 		loop while_loop
 	end_while:
-
-	mov eax, count_a
-	call print_int
-	call print_nl
 
   popa
   mov eax, 0
