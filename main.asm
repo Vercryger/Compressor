@@ -1,7 +1,7 @@
 %include "asm_io.inc"
 
 segment .data
-	matrix db 0
+	matrix times 4 db 0
 
 segment .bss
 	aux resw 1
@@ -25,22 +25,23 @@ encode:
 	call sortbyte
 	add esp, 4
 
-	; ecx & ebx will represents the i & j indexes
-	mov ecx, 3						; 0 <= ecx < 3
-	mov ebx, 3						; 0 <= ebx < 4 
+	; esi & edi will represents the i & j indexes
+	mov esi, 3						; 0 <= esi < 4
+	mov edi, 3						; 0 <= edi < 4 
 
 	; edx will be the original register of frequencies
 	; eax will be the register of frequencies sorted 
+	mov ecx, 0
 
 	for_loop_1:
-		cmp ebx, 0
+		cmp edi, 0
 		jl end_for_1
-		
+
 		mov edx, [aux]			; resets edx
-		mov ecx, 3	        ; resets ecx
+		mov esi, 3	        ; resets esi
 		for_loop_2:
 			
-			cmp ecx, 0
+			cmp esi, 0
 			jl end_for_2
 				
 				cmp al, dl
@@ -48,45 +49,37 @@ encode:
 				jmp short end_if
 			
 				found:
-					add ecx, matrix		; i need to calculate the matrix dir relative to the letter position (ecx)
-					cmp ebx, 3
-					je sum_15
-					cmp ebx, 2
-					je sum_7
-					cmp ebx, 1
-					je sum_3
-					; then sum_0
-					mov dword [ecx], 1
-					jmp short end_for_2
-
-					sum_15:
-						mov dword [ecx], 15
-						jmp short end_for_2
-					sum_7:
-						mov dword [ecx], 7
-						jmp short end_for_2
-					sum_3:
-						mov dword [ecx], 3 
-						jmp short end_for_2
+					add ecx, esi
+					ror ecx, 8
 				end_if:
 
 			ror edx, 8
-			dec ecx
+			dec esi
 			jmp short for_loop_2
 		end_for_2:
-		
+
 		ror eax, 8
-		dec ebx
+		dec edi
 		jmp short for_loop_1
 	end_for_1:		
 
-	mov ah, [matrix]
-	mov al, [matrix + 1]
-	rol eax, 16
-	mov ah, [matrix + 2]
-	mov al, [matrix + 3]
-	
-	dump_regs 1
+	; ecx has the positions of each of letter from the sorted register
+	mov edx, 0
+	mov dl, cl
+	shr ecx, 8
+	mov byte [matrix + edx], 15
+	mov edx, 0
+	mov dl, cl
+	shr ecx, 8
+	mov byte [matrix + edx], 7
+	mov edx, 0
+	mov dl, cl
+	shr ecx, 8
+	mov byte [matrix + edx], 3
+	mov edx, 0
+	mov dl, cl
+	shr ecx, 8
+	mov byte [matrix + edx], 1
 
 	popa
 	mov eax, 0
