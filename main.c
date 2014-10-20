@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+#define GREEN   "\x1b[32m"
+#define YELLOW  "\x1b[33m"
+#define CYAN    "\x1b[36m"
+#define RESET   "\x1b[0m"
+
+
 // Precondicion: str apunta a un arreglo de caracteres terminado en null.
 // Postcondicion: Imprime la representacion binaria de cada uno de los caracteres en str.
 void print_binary_rep(char *str) {
@@ -113,8 +120,8 @@ int main(int argc, char *argv[]) {
 		str_elems = strlen(str) + 1;
 	}
 	
-	printf("Elems: %d\n", str_elems);
-	printf("---------------- Cadena de entrada  --------------\n");
+	printf(YELLOW  "---------------- Cadena de entrada  --------------" RESET "\n");
+	printf("N° de elems: %d\n", str_elems);
 	printf("Cadena: %s\n\n", str);
 
 	encoded_str = malloc(str_elems);
@@ -122,15 +129,24 @@ int main(int argc, char *argv[]) {
 
 	encode(str, table, encoded_str);
 
-	printf("----------- Resultado de la codificacion  --------\n");
-	printf("Tabla: ");
+	printf(YELLOW "----------- Resultado de la codificación  --------" RESET "\n");
+	printf(CYAN "Matriz de codificación: " RESET);
 	print_binary_rep(table);
-	
-	// printf("Cadena codificada: ");
-	// print_encoded_string(encoded_str);
-	// print_nl();
-	// decode(encoded_str, table, decoded_str);
-	// printf("--------  Resultado de la decodificacion  --------\n");
-	// printf("Cadena decodificada: %s\n\n", decoded_str);
+
+	encoded_str[0] = 0b01101101;
+	encoded_str[1] = 0b10111011;
+	encoded_str[2] = 0b10101011;
+	encoded_str[3] = 0b01110101;
+	encoded_str[4] = 0b01010110;
+	encoded_str[5] = 0b11011110;
+	encoded_str[6] = 0b11101010;
+	encoded_str[7] = 0b00000000;
+
+	printf(GREEN "Cadena codificada: " RESET);
+	print_encoded_string(encoded_str);
+	print_nl();
+	decode(encoded_str, table, decoded_str);
+	printf(YELLOW "--------  Resultado de la decodificación  --------" RESET "\n");
+	printf("Cadena decodificada: %s\n\n", decoded_str);
 
 }
