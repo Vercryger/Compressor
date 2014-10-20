@@ -122,9 +122,10 @@ int main(int argc, char *argv[]) {
 
 	encode(str, table, encoded_str);
 
-	// printf("----------- Resultado de la codificacion  --------\n");
-	// printf("Tabla: \n");
-	// print_binary_rep(table);
+	printf("----------- Resultado de la codificacion  --------\n");
+	printf("Tabla: ");
+	print_binary_rep(table);
+	
 	// printf("Cadena codificada: ");
 	// print_encoded_string(encoded_str);
 	// print_nl();

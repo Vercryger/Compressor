@@ -1,7 +1,4 @@
-%include "asm_io.inc"
-
 segment .data
-	matrix times 4 db 0
 
 segment .bss
 	aux resw 1
@@ -24,6 +21,8 @@ encode:
 	push dword eax
 	call sortbyte
 	add esp, 4
+
+; --- MATRIX CONSTRUCTION ---
 
 	; esi & edi will represents the i & j indexes
 	mov esi, 3						; 0 <= esi < 4
@@ -63,23 +62,30 @@ encode:
 		jmp short for_loop_1
 	end_for_1:		
 
-	; ecx has the positions of each of letter from the sorted register
-	mov edx, 0
+	; ecx has the positions of each of the letters from the sorted register
+	mov edi, [ebp + 12]	  ; pointer to matrizCod[]
+	mov edx, 0						; edx is the offset index
+	
 	mov dl, cl
 	shr ecx, 8
-	mov byte [matrix + edx], 15
-	mov edx, 0
+	mov byte [edi + edx], 15
+	
 	mov dl, cl
 	shr ecx, 8
-	mov byte [matrix + edx], 7
-	mov edx, 0
+	mov byte [edi + edx], 7
+	
 	mov dl, cl
 	shr ecx, 8
-	mov byte [matrix + edx], 3
-	mov edx, 0
+	mov byte [edi + edx], 3
+	
 	mov dl, cl
 	shr ecx, 8
-	mov byte [matrix + edx], 1
+	mov byte [edi + edx], 1
+
+	
+; --- END MATRIX CONSTRUCTION ---
+	
+
 
 	popa
 	mov eax, 0
