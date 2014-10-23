@@ -69,28 +69,18 @@ void print_encoded_string(char *str) {
  * Codifica la cadena de caracteres de entrada 'str', y retorna el resultado en 'encoded_str'. 
  * Recordar que 'encoded_str' debe terminar con dos bits consecutivos en 0. 
  * Ademas, el procedimiento debe retornar en el parametro 'table' la codificacion usada para cada una de las letras
+ * 
+ * IMPLEMENTADO EN Assembly
 */
-// void encode(char *str, char *table, char *encoded_str) {
-// 	table[0] = 0x03;
-// 	table[1] = 0x01;
-// 	table[2] = 0x07;
-// 	table[3] = 0x0F;
-
-// 	encoded_str[0] = 0b01101101;
-// 	encoded_str[1] = 0b10111011;
-// 	encoded_str[2] = 0b10101011;
-// 	encoded_str[3] = 0b01110101;
-// 	encoded_str[4] = 0b01010110;
-// 	encoded_str[5] = 0b11011110;
-// 	encoded_str[6] = 0b11101010;
-// 	encoded_str[7] = 0b00000000;
-// }
+void encode(char *str, char *table, char *encoded_str);
 
 
 /* 
  * Toma como entradas una cadena de caracteres codificada 'decoded_str' (que finaliza con dos bits consecutivos en cero), 
  * la tabla con la codificacion usada por cada letra, 'table', y retornar la cadena decodificada en el parametro 'decoded_str'.
  * Es importante agregar al final de 'decoded_str' el caracter null. 
+ * 
+ * IMPLEMENTADO EN Assembly
 */
 void decode(char *encoded_str, char *table, char *decoded_str) {
 	char def_str[20] = "AAACCBBACBBBBAADDBB";

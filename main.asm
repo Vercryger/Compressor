@@ -82,10 +82,15 @@ encode:
 	shr ecx, 8
 	mov byte [edi + edx], 1
 
-	
+
 ; --- END MATRIX CONSTRUCTION ---
 	
+; --- BEGIN CODIFICATION ---
 
+
+
+
+; --- END CODIFICATION ---
 
 	popa
 	mov eax, 0
