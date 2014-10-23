@@ -123,19 +123,12 @@ int main(int argc, char *argv[]) {
 	printf(CYAN "Matriz de codificación: " RESET);
 	print_binary_rep(table);
 
-	encoded_str[0] = 0b01101101;
-	encoded_str[1] = 0b10111011;
-	encoded_str[2] = 0b10101011;
-	encoded_str[3] = 0b01110101;
-	encoded_str[4] = 0b01010110;
-	encoded_str[5] = 0b11011110;
-	encoded_str[6] = 0b11101010;
-	encoded_str[7] = 0b00000000;
-
 	printf(GREEN "Cadena codificada: " RESET);
 	print_encoded_string(encoded_str);
 	print_nl();
+
 	decode(encoded_str, table, decoded_str);
+
 	printf(YELLOW "--------  Resultado de la decodificación  --------" RESET "\n");
 	printf("Cadena decodificada: %s\n\n", decoded_str);
 

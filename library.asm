@@ -9,11 +9,11 @@
 segment .data
  
 segment .text
-  global counter
-  
-  counter:
-    push ebp
-    mov ebp, esp
+	global counter
+	
+	counter:
+		push ebp
+		mov ebp, esp
 
 		mov edx, 0					; edx will store the number of letters
 		mov ebx, [ebp + 8]	; move the "array of bytes" to ebx
@@ -57,8 +57,8 @@ segment .text
 
 		mov eax, edx			; <- result
 
-    pop ebp
-    ret   
+		pop ebp
+		ret   
 
 ; subprogram sortbyte
 ; Parameters:
@@ -69,42 +69,68 @@ segment .text
 segment .data
  
 segment .text
-  global sortbyte
-  
-  sortbyte:
-    push ebp
-    mov ebp, esp
+	global sortbyte
+	
+	sortbyte:
+		push ebp
+		mov ebp, esp
 
-    mov ecx, 0					; ecx will represents the i & j indexes
-    										; 0 <= ch < 4  &  0 <= cl < 3
-    mov eax, [ebp + 8]
+		mov ecx, 0					; ecx will represents the i & j indexes
+												; 0 <= ch < 4  &  0 <= cl < 3
+		mov eax, [ebp + 8]
 
-    for_loop_1:
-    	cmp ch, 4
-    	je end_for_1
-    	
-    	mov cl, 0					; resets cl 
-    	for_loop_2:
-    		cmp cl, 3
-    		je end_for_2
-    		
-    			cmp ah, al		
-    			jl swap				; ah < al
-    			jmp short end_if_sort
+		for_loop_1:
+			cmp ch, 4
+			je end_for_1
+			
+			mov cl, 0					; resets cl 
+			for_loop_2:
+				cmp cl, 3
+				je end_for_2
+				
+					cmp ah, al		
+					jl swap				; ah < al
+					jmp short end_if_sort
 
-    			swap:
-    				xchg ah, al	
-    			end_if_sort:
+					swap:
+						xchg ah, al	
+					end_if_sort:
 
-    		ror eax, 8
-    		inc cl
-    		jmp short for_loop_2
-    	end_for_2:
+				ror eax, 8
+				inc cl
+				jmp short for_loop_2
+			end_for_2:
 
-    	ror eax, 8
-    	inc ch
-    	jmp short for_loop_1
-    end_for_1:		
+			ror eax, 8
+			inc ch
+			jmp short for_loop_1
+		end_for_1:		
 
-    pop ebp
-    ret   
+		pop ebp
+		ret   
+
+; subprogram moveLowToHight
+; Parameters:
+;   register to move at -> [ebp + 8]
+; Note: 
+;		res at -> ebx
+;   ebx will be destroyed
+segment .data
+ 
+segment .text
+	global moveLowToHight
+	
+	moveLowToHight:
+		push ebp
+		mov ebp, esp
+
+		mov ebx, [ebp + 8]
+		while_loop_1:
+			cmp bl,0
+			je end_while_1
+			ror bx,1
+			jmp short while_loop_1
+		end_while_1:
+
+		pop ebp
+		ret 
