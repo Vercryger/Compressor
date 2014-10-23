@@ -1,4 +1,7 @@
+%include "asm_io.inc"
 segment .data
+
+	;axval dd 00000001b;
 
 segment .bss
 	aux resw 1
@@ -84,11 +87,116 @@ encode:
 
 
 ; --- END MATRIX CONSTRUCTION ---
-	
+
+
 ; --- BEGIN CODIFICATION ---
 
+; tiene que dejar lo que estaba en BH en el AL hasta donde pueda, si en algun momento se pasa, ah va a ser 1.
+	;Entonces sacar lo de al y ponerlo en el arreglo de codificacion(shiftear ax 8 veces), limpiar al para seguir
+	; metiendo lo que quedo en bl, cuando bl sea igual a 0, recien ahi pedir la proxima letra.
 
+	mov ecx, 0
+	mov ebx, 0
+	mov esi, [ebp+8] ;cadena
+	mov bl, [esi] ;muevo el primer elemento de la cadena a bl
+	mov eax,0 ; en al me va a ir quedando la cadena de bits que voy a tener que meter en el codeZip
+	mov ax,00000001b 
+	while1: ;while letra != 0
+		cmp  bl,0
+		je end_while1 
 
+		cmp bl, 65
+		je there_is_an_A
+		
+		cmp bl, 66
+		je there_is_a_B
+		
+		cmp bl, 67
+		je there_is_a_C
+
+	;	then there_is_a_D
+		mov byte bl, [edi+3] ;edi tiene la matriz y en bl pongo la codificacion  de la letra correspondiente
+		push ebx ;meto en la pila la codificacion de la letra
+		call rotacion ; la roto para dejarla en bh
+		add esp,4
+		mov ebx,ecx ;libero ecx, en bh me quedaron los 1's de la codificacion
+		jmp short end_if2
+
+		there_is_an_A:
+			mov byte bl, [edi] ;edi tiene la matriz y en bl pongo la codificacion  de la letra correspondiente
+			push ebx ;meto en la pila la codificacion de la letra
+			call rotacion ; la roto para dejarla en bh
+			add esp,4
+			mov ebx,ecx ;libero ecx, en bh me quedaron los 1's de la codificacion
+			jmp short end_if2
+		there_is_a_B:
+			mov byte bl, [edi+1] ;edi tiene la matriz y en bl pongo la codificacion  de la letra correspondiente
+			push ebx ;meto en la pila la codificacion de la letra
+			call rotacion ; la roto para dejarla en bh
+			add esp,4
+			mov ebx,ecx ;libero ecx, en bh me quedaron los 1's de la codificacion
+			jmp short end_if2
+		there_is_a_C:
+			mov byte bl, [edi+2] ;edi tiene la matriz y en bl pongo la codificacion  de la letra correspondiente
+			push ebx ;meto en la pila la codificacion de la letra
+			call rotacion ; la roto para dejarla en bh
+			add esp,4
+			mov ebx,ecx ;libero ecx, en bh me quedaron los 1's de la codificacion
+			
+			end_if2:
+
+			shl ax,1 ; este shifteo se hace siempre para ganar el 0 que tienen todas las codificaciones adelante
+			mov ecx,0
+			while2:
+				cmp ah,1
+				je ah_es_1 
+				cmp bh,0
+				je bh_es_0
+				shl bh,1 ;ejecuto esta linea y la siguiente si se cumple ah!=1 && bh != 0
+				rcl ah,1
+				jmp short while2
+
+				ah_es_1:
+				;si ah es 1, es poque ya complete todo el AL y tengo que guardarlo en el arreglo.
+				;MOVER EL AL AL ARREGLO EN LA POSICION QUE CORRESPONDA
+				shr ax,8
+				while3:
+					cmp bh,0
+					je consumi_lo_restante
+					shl bh,1 ;ejecuto esta linea y la siguiente si se cumple ah!=1 && bh != 0
+					rcl ah,1
+					jmp short while3
+				bh_es_0:
+					inc esi	
+					mov ebx,0	
+					mov bl, [esi] ;obtengo la siguiente letra
+					jmp while1
+				consumi_lo_restante:
+					inc esi	
+					mov ebx,0	
+					mov bl, [esi] ;obtengo la siguiente letra
+					jmp while1
+
+				end_while1:
+
+		
+
+		;Esta rutina saca lo que tiene bl y lo pone en bh
+		rotacion:
+			push ebp
+    		mov ebp, esp
+
+    		mov ecx,[ebp+8]
+			while:
+				cmp cl,0
+				je end_while2
+
+				ror cx,1
+				jmp short while
+			end_while2:
+
+			pop ebp
+    		ret 
 
 ; --- END CODIFICATION ---
 
