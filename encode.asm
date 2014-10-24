@@ -11,7 +11,7 @@ segment .bss
 
 segment .text
   
-  extern counter, sortbyte, moveLowToHight
+  extern counter, sortbyte, getCodification
   global encode
  
 encode:
@@ -103,7 +103,7 @@ encode:
 ; * ===> EDI is the pointer to matrizCod[]               
 ; * ===> ECX is the pointer to cadeZip[]
 
-; tiene que dejar lo que estaba en BH en el AL hasta donde pueda, si en algun momento se pasa, ah va a ser 1.
+; tiene que dejar lo que estaba en BL en el registro AL hasta donde pueda, si en algun momento se pasa, ah va a ser 1.
 ; Entonces sacar lo de AL y ponerlo en el arreglo de codificacion(shiftear ax 8 veces), limpiar al para seguir
 ; metiendo lo que quedo en BL, cuando BL sea igual a 0, recien ahi pedir la proxima letra.
 
@@ -116,46 +116,25 @@ encode:
   while_loop_1:             ; while (letra != 0)
     cmp  bl, 0
     je end_while_1          ; there is no more letters
-    cmp bl, 65
-    je there_is_an_A
-    cmp bl, 66
-    je there_is_a_B
-    cmp bl, 67
-    je there_is_a_C
-
-  ; then there_is_a_D
-    mov byte bl, [edi + 3] 
-    jmp short end_if_2
-
-    there_is_an_A:
-      mov byte bl, [edi] 
-      jmp short end_if_2
-    there_is_a_B:
-      mov byte bl, [edi + 1] 
-      jmp short end_if_2
-    there_is_a_C:
-      mov byte bl, [edi + 2] 
-      
-    end_if_2:
-
-  ; now EBX has the letter's codification 
-    push ebx                
-    call moveLowToHight     
-    add esp, 4
     
+    push dword edi
+    push dword ebx
+    call getCodification
+    add esp, 8
+
+    ; now BL has the letter's codification 
+ 
     shl ax, 1             ; este shifteo se hace siempre para ganar el 0 que tienen todas las codificaciones adelante
   
     while_loop_2:
       cmp ah, 1
       je ah_es_1 
-
-      cmp bh, 0
-      je end_while_2
-      
-      shl bh, 1 
-      rcl ax, 1
-      
-      jmp short while_loop_2
+        cmp bl, 0
+        je end_while_2
+          shr bl, 1 
+          rcl ax, 1
+        
+          jmp short while_loop_2
       ah_es_1:  
       
       ; if AH == 1 then i have to store the full AL in cadeZip[]

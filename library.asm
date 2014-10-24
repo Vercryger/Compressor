@@ -109,6 +109,53 @@ segment .text
 		pop ebp
 		ret   
 
+; subprogram getCodification
+; Parameters:
+;   ASCII number at -> [ebp + 8]
+;		matrizCod[]  at -> [ebp + 12]
+; Note: 
+;		res at -> ebx
+;   ebx will be destroyed
+segment .data
+ 
+segment .text
+	global getCodification
+	
+	getCodification:
+		push ebp
+		mov ebp, esp
+		
+		mov ebx, [ebp + 8]
+		mov edi, [ebp + 12] 
+
+		cmp bl, 65
+    je BL_is_an_A
+    cmp bl, 66
+    je BL_is_a_B
+    cmp bl, 67
+    je BL_is_a_C
+
+  ; then there_is_a_D
+    mov byte bl, [edi + 3] 
+    jmp short end_if_2
+
+    BL_is_an_A:
+      mov byte bl, [edi] 
+      jmp short end_if_2
+    BL_is_a_B:
+      mov byte bl, [edi + 1] 
+      jmp short end_if_2
+    BL_is_a_C:
+      mov byte bl, [edi + 2] 
+      
+    end_if_2:
+
+ 		pop ebp
+		ret 
+
+;***************************
+;     THIS IS NOT USED 
+;***************************
 ; subprogram moveLowToHight
 ; Parameters:
 ;   register to move at -> [ebp + 8]
