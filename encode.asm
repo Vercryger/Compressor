@@ -103,11 +103,8 @@ encode:
 ; * ===> EDI is the pointer to matrizCod[]               
 ; * ===> ECX is the pointer to cadeZip[]
 
-; tiene que dejar lo que estaba en BH en el AL hasta donde pueda, si en algun momento se pasa, ah va a ser 1.
-; Entonces sacar lo de AL y ponerlo en el arreglo de codificacion(shiftear ax 8 veces), limpiar al para seguir
-; metiendo lo que quedo en BL, cuando BL sea igual a 0, recien ahi pedir la proxima letra.
 
-  mov eax, 1                ; en AL me va a ir quedando la cadena de bits que voy a tener que meter en el cadeZip
+  mov eax, 1                ; AL has bits which are inserted in cadeZip
   mov ebx, 0  
   mov ecx, [ebp + 16]       
   mov esi, [ebp + 8]        
@@ -143,7 +140,7 @@ encode:
     call moveLowToHight     
     add esp, 4
     
-    shl ax, 1             ; este shifteo se hace siempre para ganar el 0 que tienen todas las codificaciones adelante
+    shl ax, 1             ; to insert the 0 that has all codifications
   
     while_loop_2:
       cmp ah, 1
