@@ -82,10 +82,7 @@ void encode(char *str, char *table, char *encoded_str);
  * 
  * IMPLEMENTADO EN Assembly
 */
-void decode(char *encoded_str, char *table, char *decoded_str) {
-	char def_str[20] = "AAACCBBACBBBBAADDBB";
-	strcpy(decoded_str, def_str);
-} 
+void decode(char *encoded_str, char *table, char *decoded_str);
 
 int main(int argc, char *argv[]) {
 

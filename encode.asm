@@ -5,9 +5,8 @@
 ; * ===> *matrizCod at [ebp + 12]                      
 ; * ===> *cadeZip at [ebp + 16]                    
 ; * ****************************************************************/
-
 segment .bss
-  aux resw 1
+  aux resw 1            ; used for save the original register of frequencies
 
 segment .text
   
@@ -65,7 +64,7 @@ encode:
       jmp short for_loop_2
     end_for_2:
 
-    ror eax, 8
+    shr eax, 8
     dec edi
     jmp short for_loop_1
   end_for_1:    
