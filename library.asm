@@ -153,10 +153,54 @@ segment .text
  		pop ebp
 		ret 
 
+; subprogram getLetter
+; Parameters:
+;   codification at -> [ebp + 8]
+;		matrizCod[]  at -> [ebp + 12]
+; Note: 
+;		res at -> eax
+;   eax will be destroyed
+segment .data
+ 
+segment .text
+	global getLetter
+	
+	getLetter:
+		push ebp
+		mov ebp, esp
+		
+		mov eax, [ebp + 8]
+		mov edi, [ebp + 12] 
+
+		cmp al, [edi]
+    je is_an_A
+    cmp al, [edi + 1]
+    je is_a_B
+    cmp al, [edi + 2]
+    je is_a_C
+
+  ; then is_a_D
+    mov al, 68 
+    jmp short end_if_3
+
+    is_an_A:
+      mov al, 65
+      jmp short end_if_3
+    is_a_B:
+      mov al, 66 
+      jmp short end_if_3
+    is_a_C:
+      mov al, 67 
+      
+    end_if_3:
+
+ 		pop ebp
+		ret 
+
 ;***************************
 ;     THIS IS NOT USED 
 ;***************************
-; subprogram moveLowToHight
+; subprogram moveLowToHigh
 ; Parameters:
 ;   register to move at -> [ebp + 8]
 ; Note: 
@@ -165,9 +209,9 @@ segment .text
 segment .data
  
 segment .text
-	global moveLowToHight
+	global moveLowToHigh
 	
-	moveLowToHight:
+	moveLowToHigh:
 		push ebp
 		mov ebp, esp
 
