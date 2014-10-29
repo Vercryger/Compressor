@@ -1,7 +1,7 @@
 ;/*******************************************************************
-; * THIS MODULE IMPLEMENTS THE encode(cadeChar, *matrizCod, *cadeZip)
+; * THIS MODULE IMPLEMENTS THE encode(*cadeChar, *matrizCod, *cadeZip)
 ; * VARIABLES                            
-; * ===> cadeChar at [ebp + 8]                     
+; * ===> *cadeChar at [ebp + 8]                     
 ; * ===> *matrizCod at [ebp + 12]                      
 ; * ===> *cadeZip at [ebp + 16]                    
 ; * ****************************************************************/
