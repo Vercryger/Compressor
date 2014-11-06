@@ -1,9 +1,9 @@
 ;/*******************************************************************
 ; * THIS MODULE IMPLEMENTS THE decode(*cadeZip, *matrizCod, *cadeChar)
 ; * VARIABLES                            
-; * ===> *cadeChar at [ebp + 8]                     
+; * ===> *cadeZip at [ebp + 8]                     
 ; * ===> *matrizCod at [ebp + 12]                      
-; * ===> *cadeZip at [ebp + 16]                    
+; * ===> *cadeChar at [ebp + 16]                    
 ; * ****************************************************************/
 %include "asm_io.inc"
 segment .bss
