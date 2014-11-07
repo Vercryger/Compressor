@@ -5,6 +5,7 @@
 ; * ===> *matrizCod at [ebp + 12]                      
 ; * ===> *cadeZip at [ebp + 16]                    
 ; * ****************************************************************/
+%include "asm_io.inc"
 segment .bss
   aux resw 1            ; used for save the original register of frequencies
 
@@ -155,6 +156,18 @@ encode:
 ;/******************************************************************/
 ;/************************* END CODIFICATION ***********************/
 ;/******************************************************************/
+  
+  ; this is a correction
+  ; "al" could have bits to store in cadeZip
+  while_loop_3:
+    cmp ah, 1
+    je end_while_3
+    shl ax, 1
+    
+    jmp short while_loop_3
+  end_while_3:
+  mov byte [ecx], al
+  inc ecx
 
   popa
   mov eax, 0
