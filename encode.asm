@@ -5,7 +5,6 @@
 ; * ===> *matrizCod at [ebp + 12]                      
 ; * ===> *cadeZip at [ebp + 16]                    
 ; * ****************************************************************/
-%include "asm_io.inc"
 segment .bss
   aux resw 1            ; used for save the original register of frequencies
 
@@ -70,8 +69,6 @@ encode:
     dec edi
     jmp short for_loop_1
   end_for_1: 
-
-  dump_regs 1
   
   ; HERE ecx has the positions of each of the letters from the sorted register
   mov edi, [ebp + 12]   ; EDI = pointer to matrizCod[]
