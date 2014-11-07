@@ -159,7 +159,7 @@ segment .text
 ;		matrizCod[]  at -> [ebp + 12]
 ; Note: 
 ;		res at -> eax
-;   eax will be destroyed
+;   eax & ecx will be destroyed
 segment .data
  
 segment .text
@@ -170,13 +170,13 @@ segment .text
 		mov ebp, esp
 		
 		mov eax, [ebp + 8]
-		mov edi, [ebp + 12] 
+		mov ecx, [ebp + 12] 
 
-		cmp al, [edi]
+		cmp al, [ecx]
     je is_an_A
-    cmp al, [edi + 1]
+    cmp al, [ecx + 1]
     je is_a_B
-    cmp al, [edi + 2]
+    cmp al, [ecx + 2]
     je is_a_C
 
   ; then is_a_D
