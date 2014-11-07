@@ -22,43 +22,48 @@ decode:
   mov edi, [ebp + 8]
   mov esi, [ebp + 16]
 
-  mov bl, [edi]         ; bl = cadeZip[0]
-  while_loop_1:
-    cmp bl, 0 
-    je end_while_1
+  mov bh, [edi]                 ; bh = cadeZip[0]
+  inc edi
+  mov bl, [edi]                 ; bl = cadeZip[1]
+  shl bx, 1                     ; deletes the first 0
+  
+  while_loop:
+    cmp bh, 255 
+    je end_while
+  
+    shl bx, 1
+    jnc new_cod                 ; if (carry == 0) then new_cod 
+    rcl al, 1
 
-    push dword ebx
-    call moveLowToHigh
-    add esp, 4
+    jmp short continue
 
-    while_loop_2:
-      cmp bh, 0
-      je end_while_2
+    new_cod:
+      push dword [ebp + 12]     ; push *matrizCod
+      push dword eax
+      call getLetter
+      add esp, 8
 
-      ; fix this condition 
-      shl bh, 1 
-      rcl ax, 1
+      mov byte [esi], al
+      inc esi
+      mov eax, 0                ; clear the eax
+    continue:
 
-      new_cod:
-        push dword edi
-        push dword edx
-        call getLetter
-        add esp, 8
-        
-        mov byte [esi], al
-        inc esi
-        mov eax, 0        ; clear the eax
-      continue:
+    cmp bl, 0
+    jne end_if 
 
-      jmp short while_loop_2
-    end_while_2:
+      inc edi
+      mov bl, [edi]             ; bl = cadeZip[index++]
+      
+      cmp bl, 0
+      jne end_if
+        mov bl, 255
+    end_if:
 
-    inc edi
-    mov ebx, 0            ; clear the ebx
-    mov bl, [edi]         ; bl = cadeZip[index++]
-    jmp short while_loop_1
-  end_while_1:
+    jmp short while_loop
+  end_while:
 
+  dump_regs 255
+  
   popa
   mov eax, 0
   leave
