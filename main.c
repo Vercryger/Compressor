@@ -86,9 +86,6 @@ void decode(char *encoded_str, char *table, char *decoded_str);
 
 int main(int argc, char *argv[]) {
 
-	// Ejemplo por defecto:
-	// AAACCBBACBBBBAADDBB
-	char def_str[20] = "AAACCBBACBBBBAADDBB";
 	char table[5];
 	table[4] = 0;
 	int str_elems = 20;
@@ -96,10 +93,6 @@ int main(int argc, char *argv[]) {
 	char *str;
 	char *encoded_str;
 	char *decoded_str;
-
-	if (argc == 1) {
-		str = def_str;
-	}
 
 	// Ejemplo provisto por el usuario
 	if (argc == 2) {
