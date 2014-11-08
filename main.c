@@ -94,11 +94,9 @@ int main(int argc, char *argv[]) {
 	char *encoded_str;
 	char *decoded_str;
 
-	// Ejemplo provisto por el usuario
-	if (argc == 2) {
-		str = argv[1];
-		str_elems = strlen(str) + 1;
-	}
+	str = argv[1];
+	str_elems = strlen(str) + 1;
+	
 	
 	printf(YELLOW  "---------------- Cadena de entrada  --------------" RESET "\n");
 	printf("N° de elems: %d\n", str_elems);
