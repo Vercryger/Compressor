@@ -5,8 +5,9 @@
 ; * ===> *matrizCod at [ebp + 12]                      
 ; * ===> *cadeChar at [ebp + 16]                    
 ; * ****************************************************************/
+%include "asm_io.inc"
 segment .data
-  index db 0
+  index db 7
 
 segment .text
 
@@ -19,14 +20,13 @@ decode:
 
   mov eax, 0
   mov ebx, 0
-  mov dword [index], 7
   mov edi, [ebp + 8]
   mov esi, [ebp + 16]
 
   mov bh, [edi]                 ; bh = cadeZip[0]
   inc edi
   mov bl, [edi]                 ; bl = cadeZip[1]
-  rol bx, 1                     ; deletes the first 0
+  shl bx, 1                     ; deletes the first 0
   
   while_loop:
     
@@ -42,7 +42,8 @@ decode:
       push dword eax
       call getLetter
       add esp, 8
-
+      cmp al, 0
+      je end_while
       mov byte [esi], al
       inc esi
       mov eax, 0                ; clear the eax
@@ -55,7 +56,7 @@ decode:
     jne end_if 
       inc edi
       mov bl, [edi]             ; bl = cadeZip[index++]
-
+      
       mov dword [index], 8      ; index = 8
 
       cmp bl, 0

@@ -22,6 +22,65 @@ encode:
   call counter
   add esp, 4
 
+  mov ecx, 0;
+mov ch,-1
+while_para:
+  cmp ch, -5
+  je end_while_para
+
+  mov cl, al ;cl tiene el maximo
+  cmp ah, cl
+  jl es_menor
+  mov cl,ah
+
+  es_menor:
+    ror eax,16
+    cmp al, cl
+    jl es_menor2
+    mov cl, al
+  es_menor2:
+    cmp ah, cl
+    jl es_menor3
+    mov cl, ah
+  es_menor3:
+
+  rol eax, 16
+
+;maximo en cl
+    cmp al, cl
+    jne noes_ese1
+    
+    mov al, ch
+    jmp short end_if
+    
+    noes_ese1:
+    cmp ah, cl
+    jne noes_ese2
+    
+    mov ah, ch
+    jmp short end_if
+    
+    noes_ese2:
+
+    ror eax, 16
+
+    cmp al, cl
+    jne noes_ese3
+    
+    mov al, ch
+    rol eax, 16
+    jmp short end_if
+    
+    noes_ese3: ;es el ultimo
+    mov ah, ch
+    rol eax, 16
+    
+    end_if:
+    
+    dec ch
+    jmp while_para
+    end_while_para:
+
   mov [aux], eax        
 
   push dword eax
@@ -167,7 +226,6 @@ encode:
     jmp short while_loop_3
   end_while_3:
   mov byte [ecx], al
-  inc ecx
 
   popa
   mov eax, 0

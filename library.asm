@@ -178,9 +178,11 @@ segment .text
     je is_a_B
     cmp al, [ecx + 2]
     je is_a_C
+    cmp al, [ecx + 3]
+    je is_a_D 
 
-  ; then is_a_D
-    mov al, 68 
+    ;ax = 0
+    mov eax, 0
     jmp short end_if_3
 
     is_an_A:
@@ -191,7 +193,10 @@ segment .text
       jmp short end_if_3
     is_a_C:
       mov al, 67 
-      
+    	jmp short end_if_3
+    is_a_D:
+    	mov al, 68 
+
     end_if_3:
 
  		pop ebp
