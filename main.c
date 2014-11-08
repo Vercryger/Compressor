@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 
 	char table[5];
 	table[4] = 0;
-	int str_elems = 20;
+	int str_elems;
 
 	char *str;
 	char *encoded_str;
