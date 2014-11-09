@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#define RED 		"\x1b[31m"
 #define GREEN   "\x1b[32m"
 #define YELLOW  "\x1b[33m"
 #define CYAN    "\x1b[36m"
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 	
 	printf(YELLOW  "---------------- Cadena de entrada  --------------" RESET "\n");
 	printf("N° de elems: %d\n", str_elems);
-	printf("Cadena: %s\n\n", str);
+	printf("Cadena original: %s\n\n", str);
 
 	encoded_str = malloc(str_elems);
 	decoded_str = malloc(str_elems);
@@ -116,8 +116,17 @@ int main(int argc, char *argv[]) {
 	print_nl();
 
 	decode(encoded_str, table, decoded_str);
+	
+	int decoded_str_elems = strlen(decoded_str) + 1;
+	int res = (str_elems == decoded_str_elems) ? strncmp(decoded_str, str, str_elems) : 10;
 
 	printf(YELLOW "--------  Resultado de la decodificación  --------" RESET "\n");
-	printf("Cadena decodificada: %s\n\n", decoded_str);
-
+	
+	if(res == 0) {
+		printf(GREEN "OK	" RESET "\n");
+		printf("Cadena decodificada: %s\n\n", decoded_str);
+	} else {
+		printf(RED "FAILURE	" RESET "\n");
+	}
+	
 }
