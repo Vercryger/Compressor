@@ -1,17 +1,16 @@
-;/*******************************************************************
+;/******************************************************************/
 ; * THIS MODULE IMPLEMENTS THE encode(*cadeChar, *matrizCod, *cadeZip)
 ; * VARIABLES                            
 ; * ===> *cadeChar at [ebp + 8]                     
 ; * ===> *matrizCod at [ebp + 12]                      
 ; * ===> *cadeZip at [ebp + 16]                    
 ; * ****************************************************************/
-%include "asm_io.inc"
 segment .bss
   aux resw 1            ; used for save the original register of frequencies
 
 segment .text
   
-  extern counter, sortbyte, getCodification
+  extern counter, sortbyte, getCodification, turnToNegative
   global encode
  
 encode:
@@ -22,64 +21,9 @@ encode:
   call counter
   add esp, 4
 
-  mov ecx, 0;
-mov ch,-1
-while_para:
-  cmp ch, -5
-  je end_while_para
-
-  mov cl, al ;cl tiene el maximo
-  cmp ah, cl
-  jl es_menor
-  mov cl,ah
-
-  es_menor:
-    ror eax,16
-    cmp al, cl
-    jl es_menor2
-    mov cl, al
-  es_menor2:
-    cmp ah, cl
-    jl es_menor3
-    mov cl, ah
-  es_menor3:
-
-  rol eax, 16
-
-;maximo en cl
-    cmp al, cl
-    jne noes_ese1
-    
-    mov al, ch
-    jmp short end_if
-    
-    noes_ese1:
-    cmp ah, cl
-    jne noes_ese2
-    
-    mov ah, ch
-    jmp short end_if
-    
-    noes_ese2:
-
-    ror eax, 16
-
-    cmp al, cl
-    jne noes_ese3
-    
-    mov al, ch
-    rol eax, 16
-    jmp short end_if
-    
-    noes_ese3: ;es el ultimo
-    mov ah, ch
-    rol eax, 16
-    
-    end_if:
-    
-    dec ch
-    jmp while_para
-    end_while_para:
+  push dword eax
+  call turnToNegative
+  add esp, 4
 
   mov [aux], eax        
 
@@ -216,15 +160,15 @@ while_para:
 ;/************************* END CODIFICATION ***********************/
 ;/******************************************************************/
   
-  ; this is a correction
+  ; this is a fix
   ; "al" could have bits to store in cadeZip
-  while_loop_3:
+  while_loop_fix:
     cmp ah, 1
-    je end_while_3
+    je end_while_fix
     shl ax, 1
     
-    jmp short while_loop_3
-  end_while_3:
+    jmp short while_loop_fix
+  end_while_fix:
   mov byte [ecx], al
 
   popa
