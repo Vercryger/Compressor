@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 	str_elems = strlen(str) + 1;
 	
 	
-	printf(YELLOW  "---------------- Cadena de entrada  --------------" RESET "\n");
+	printf(YELLOW  "----------------- Cadena de entrada ----------------" RESET "\n");
 	printf("N° de elems: %d\n", str_elems);
 	printf("Cadena original: %s\n\n", str);
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 
 	encode(str, table, encoded_str);
 
-	printf(YELLOW "----------- Resultado de la codificación  --------" RESET "\n");
+	printf(YELLOW "------------------- Codificación -------------------" RESET "\n");
 	printf(CYAN "Matriz de codificación: " RESET);
 	print_binary_rep(table);
 
@@ -120,13 +120,13 @@ int main(int argc, char *argv[]) {
 	int decoded_str_elems = strlen(decoded_str) + 1;
 	int res = (str_elems == decoded_str_elems) ? strncmp(decoded_str, str, str_elems) : 10;
 
-	printf(YELLOW "--------  Resultado de la decodificación  --------" RESET "\n");
+	printf(YELLOW "------------------ Decodificación ------------------" RESET "\n");
 	
 	if(res == 0) {
-		printf(GREEN "OK	" RESET "\n");
+		printf("Resultado:" GREEN " OK	" RESET "\n");
 		printf("Cadena decodificada: %s\n\n", decoded_str);
 	} else {
-		printf(RED "FAILURE	" RESET "\n");
+		printf("Resultado:" RED " FAILURE	" RESET "\n");
 	}
 	
 }

@@ -5,7 +5,6 @@
 ; * ===> *matrizCod at [ebp + 12]                      
 ; * ===> *cadeChar at [ebp + 16]                    
 ; * ****************************************************************/
-%include "asm_io.inc"
 segment .data
   index db 7
 
@@ -46,31 +45,21 @@ decode:
       call getLetter
       add esp, 8
       
-      mov byte [esi], al
-      inc esi
+      mov byte [esi], al        ; cadeChar[j++] = al
+      inc esi                 
       mov eax, 0                ; clear the eax
     continue:
 
     cmp dword [index], 0                  
     jne end_if 
       inc edi
-      mov bl, [edi]             ; bl = cadeZip[index++]
+      mov bl, [edi]             ; bl = cadeZip[i++]
       
       mov dword [index], 8      ; index = 8
     end_if:
     
     jmp short while_loop
   end_while:  
-  
-  cmp eax, 0
-  je end_fix
-    push dword [ebp + 12]       ; push *matrizCod
-    push dword eax
-    call getLetter
-    add esp, 8
-
-    mov byte [esi], al
-  end_fix:
 
   popa
   mov eax, 0
