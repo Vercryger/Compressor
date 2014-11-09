@@ -178,12 +178,10 @@ segment .text
     je is_a_B
     cmp al, [ecx + 2]
     je is_a_C
-    cmp al, [ecx + 3]
-    je is_a_D 
 
-    ;ax = 0
-    mov eax, 0
-    jmp short end_if_3
+    ;is_a_D:
+    	mov al, 68
+    	jmp short end_if_3
 
     is_an_A:
       mov al, 65
@@ -192,41 +190,82 @@ segment .text
       mov al, 66 
       jmp short end_if_3
     is_a_C:
-      mov al, 67 
-    	jmp short end_if_3
-    is_a_D:
-    	mov al, 68 
+      mov al, 67  
 
     end_if_3:
 
  		pop ebp
 		ret 
 
-;***************************
-;     THIS IS NOT USED 
-;***************************
-; subprogram moveLowToHigh
+; subprogram turnToNegative
 ; Parameters:
 ;   register to move at -> [ebp + 8]
 ; Note: 
-;		res at -> ebx
-;   ebx will be destroyed
+;		res at -> eax
+;   eax, ebc, ecx & edx will be destroyed
 segment .data
  
 segment .text
-	global moveLowToHigh
+	global turnToNegative
 	
-	moveLowToHigh:
+	turnToNegative:
 		push ebp
 		mov ebp, esp
 
-		mov ebx, [ebp + 8]
-		while_loop_1:
-			cmp bl,0
-			je end_while_1
-			ror bx,1
-			jmp short while_loop_1
-		end_while_1:
+		mov ecx, 0;
+	  mov ch,-1
+	  big_while:
+	    cmp ch, -5
+	    je end_big_while
+
+	      mov cl, al            
+	      cmp ah, cl
+	      jl es_menor1
+	        mov cl,ah
+
+	      es_menor1:
+	        ror eax, 16
+	        cmp al, cl
+	        jl es_menor2
+	        mov cl, al
+	      es_menor2:
+	        cmp ah, cl
+	        jl es_menor3
+	        mov cl, ah
+	      es_menor3:
+
+	    rol eax, 16             ; turns eax to the original state
+
+
+	    ; cl has the maximum value
+	    mov edx, 1
+	    while_loop_1:
+	      cmp edx, 2
+	      jg end_while_1
+
+	        cmp al, cl              
+	        jne comparteToAH
+	    
+	          mov al, ch
+	          jmp short end_while_1
+	    
+	        comparteToAH:
+	          cmp ah, cl
+	          jne checkExtendedPart
+	    
+	            mov ah, ch
+	            jmp short end_while_1
+	    
+	        checkExtendedPart:
+	        ror eax, 16
+
+	      inc edx
+	      jmp short while_loop_1
+	    end_while_1:
+	      
+	    dec ch
+	    jmp big_while
+	  end_big_while:
 
 		pop ebp
 		ret 

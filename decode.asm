@@ -1,4 +1,4 @@
-;/*******************************************************************
+;/******************************************************************/
 ; * THIS MODULE IMPLEMENTS THE decode(*cadeZip, *matrizCod, *cadeChar)
 ; * VARIABLES                            
 ; * ===> *cadeZip at [ebp + 8]                     
@@ -38,19 +38,18 @@ decode:
     jmp short continue
 
     new_cod:
+      cmp al, 0
+      je end_while
+
       push dword [ebp + 12]     ; push *matrizCod
       push dword eax
       call getLetter
       add esp, 8
-      cmp al, 0
-      je end_while
+      
       mov byte [esi], al
       inc esi
       mov eax, 0                ; clear the eax
     continue:
-
-    cmp bx, 32512               ; bh == 127 && bl == 0
-    je end_while
 
     cmp dword [index], 0                  
     jne end_if 
@@ -58,25 +57,20 @@ decode:
       mov bl, [edi]             ; bl = cadeZip[index++]
       
       mov dword [index], 8      ; index = 8
-
-      cmp bl, 0
-      jne end_if
-        mov bl, 127
-
     end_if:
     
     jmp short while_loop
   end_while:  
   
   cmp eax, 0
-  je end
-    push dword [ebp + 12]     ; push *matrizCod
+  je end_fix
+    push dword [ebp + 12]       ; push *matrizCod
     push dword eax
     call getLetter
     add esp, 8
 
     mov byte [esi], al
-  end:
+  end_fix:
 
   popa
   mov eax, 0
