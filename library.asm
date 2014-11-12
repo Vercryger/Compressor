@@ -212,26 +212,31 @@ segment .text
 		push ebp
 		mov ebp, esp
 
-		mov ecx, 0;
-	  mov ch,-1
+		mov ecx, 0
+	  mov ch, -1
+
 	  big_while:
 	    cmp ch, -5
 	    je end_big_while
 
 	      mov cl, al            
+
 	      cmp ah, cl
 	      jl es_menor1
-	        mov cl,ah
+	        mov cl, ah
 
 	      es_menor1:
 	        ror eax, 16
+
 	        cmp al, cl
 	        jl es_menor2
 	        mov cl, al
+
 	      es_menor2:
 	        cmp ah, cl
 	        jl es_menor3
 	        mov cl, ah
+
 	      es_menor3:
 
 	    rol eax, 16             ; turns eax to the original state
@@ -262,6 +267,11 @@ segment .text
 	      inc edx
 	      jmp short while_loop_1
 	    end_while_1:
+	    
+	    cmp edx, 2
+	    jne keep_going
+	    	rol eax, 16
+	    keep_going:
 	      
 	    dec ch
 	    jmp big_while
